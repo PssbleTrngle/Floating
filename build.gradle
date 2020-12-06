@@ -8,12 +8,15 @@ buildscript {
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10"
     }
 }
+
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'kotlin'
 
 static def parseConfig(File config) {
     config.withReader {
@@ -87,8 +90,22 @@ minecraft {
     }
 }
 
+repositories {
+    maven {
+        name = 'kotlinforforge'
+        url = 'https://thedarkcolour.github.io/KotlinForForge/'
+    }
+}
+
 dependencies {
     minecraft "net.minecraftforge:forge:${config.mc_version}-${config.forge_version}"
+    implementation "thedarkcolour:kotlinforforge:${config.kotlin_mod_version}"
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }
 
 jar {
