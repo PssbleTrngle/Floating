@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "com.possible_triangle.floating.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "minVersion": "0.8",
+  "refmap": "floating.refmap.json",
+  "mixins": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
