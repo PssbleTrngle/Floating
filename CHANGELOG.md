@@ -9,4 +9,11 @@ All notable changes to this project will be documented in this file.
 
 ## [1.0.1] - 2020-12-07
 ### Fixed
-World type through core mode
+World type through core mode.
+
+## [1.1.0] - 2020-12-08
+### Changed
+- Using `ForgeWorldType`
+
+### Added
+- New world type generating floating islands with BOP biomes
