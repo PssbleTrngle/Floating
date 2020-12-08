@@ -9,8 +9,9 @@ import net.minecraft.world.biome.provider.OverworldBiomeProvider
 import net.minecraft.world.gen.ChunkGenerator
 import net.minecraft.world.gen.DimensionSettings
 import net.minecraft.world.gen.NoiseChunkGenerator
+import net.minecraftforge.common.world.ForgeWorldType
 
-class FloatingBOPWorldType : ModdedWorldType("floating_bop", { biomeReg, settingsReg, seed ->
+class FloatingBOPWorldType : ForgeWorldType({ biomeReg, settingsReg, seed ->
     val biomes = BOPBiomeProvider(seed, biomeReg)
     NoiseChunkGenerator(biomes, seed) { settingsReg.getOrThrow(DimensionSettings.field_242739_h) }
 })
