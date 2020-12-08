@@ -43,7 +43,6 @@ println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getPro
 minecraft {
 
     mappings channel: config.mapping_channel, version: config.mapping_version
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
         client {
@@ -103,6 +102,7 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${config.mc_version}-${config.forge_version}"
     implementation "thedarkcolour:kotlinforforge:${config.kotlin_mod_version}"
+    implementation fg.deobf("com.github.glitchfiend.biomesoplenty:BiomesOPlenty:${config.bop_version}:universal")
 }
 
 compileKotlin {

@@ -56,7 +56,7 @@ jobs:
           display_name: Version ${{ steps.version.outputs.next }} (${{ github.ref }})
           game_versions: 8134,4458,7498
           release_type: ${{ steps.version.outputs.type }}
-          relations: kotlin-for-forge:requiredDependency
+          relations: kotlin-for-forge:requiredDependency,biomes-o-plenty:optionalDependency
 
       - name: Create Release
         id: release

@@ -14,7 +14,7 @@ description='''World type generating as floating islands'''
 [[dependencies.brazier]]
 modId="forge"
 mandatory=true
-versionRange="[35,)"
+versionRange="[35.1.10,)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.brazier]]
