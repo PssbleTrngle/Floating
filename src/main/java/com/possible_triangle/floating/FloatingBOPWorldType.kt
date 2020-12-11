@@ -1,7 +1,6 @@
 package com.possible_triangle.floating
 
 import biomesoplenty.common.world.BOPBiomeProvider
-import net.minecraft.client.gui.screen.BiomeGeneratorTypeScreens
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.registry.Registry
 import net.minecraft.world.biome.Biome
