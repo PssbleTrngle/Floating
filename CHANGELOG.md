@@ -16,4 +16,8 @@ World type through core mode.
 - Using `ForgeWorldType`
 
 ### Added
-- New world type generating floating islands with BOP biomes
+- New world type generating floating islands with BOP biomes.
+
+## [1.1.1] - 2020-12-11
+### Fixed
+- Remove old import breaking server run
