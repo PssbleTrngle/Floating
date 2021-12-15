@@ -3,54 +3,36 @@ buildscript {
         maven { url = 'https://files.minecraftforge.net/maven' }
         jcenter()
         mavenCentral()
-        maven { url = 'https://dist.creeper.host/Sponge/maven' }
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10"
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.+', changing: true
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.32"
+        classpath "org.jetbrains.kotlin:kotlin-serialization:1.4.32"
     }
 }
-
 apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
-apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'kotlin'
-
-static def parseConfig(File config) {
-    config.withReader {
-        def prop = new Properties()
-        prop.load(it)
-        return (new ConfigSlurper().parse(prop))
-    }
-}
 
 ext.configFile = file('build.properties')
 ext.config = parseConfig(configFile)
 
-mixin {
-    add sourceSets.main, "${config.mod_id}.refmap.json"
-}
+version = '1.0.0'
+group = 'com.possible_trianlge'
+archivesBaseName = config.mod_id
 
-version = config.mod_version
-group = "possibletriangle.${config.mod_id}"
-archivesBaseName = config.mod_name
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
-
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-
-    mappings channel: config.mapping_channel, version: config.mapping_version
+    // Change to your preferred mappings
+    mappings channel: 'official', version: config.mc_version
+    // Add your AccessTransformer
+    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
         client {
             workingDirectory project.file('run')
 
-            property 'forge.logging.markers', ''
             property 'forge.logging.console.level', 'debug'
-            arg "-mixin.config=${config.mod_id}.mixins.json".toString()
 
             mods {
                 floating {
@@ -62,9 +44,7 @@ minecraft {
         server {
             workingDirectory project.file('run')
 
-            property 'forge.logging.markers', ''
             property 'forge.logging.console.level', 'debug'
-            arg "-mixin.config=${config.mod_id}.mixins.json".toString()
 
             mods {
                 floating {
@@ -76,12 +56,9 @@ minecraft {
         data {
             workingDirectory project.file('run')
 
-            property 'forge.logging.markers', ''
             property 'forge.logging.console.level', 'debug'
 
-            args '--mod', config.mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-
-            environment 'target', 'fmluserdevdata'
+            args '--mod', 'floating', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources')
 
             mods {
                 floating {
@@ -94,48 +71,51 @@ minecraft {
 
 repositories {
     maven {
-        name = 'kotlinforforge'
+        name = 'Kotlin for Forge'
         url = 'https://thedarkcolour.github.io/KotlinForForge/'
     }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${config.mc_version}-${config.forge_version}"
-    implementation "thedarkcolour:kotlinforforge:${config.kotlin_mod_version}"
-    implementation fg.deobf("com.github.glitchfiend.biomesoplenty:BiomesOPlenty:${config.bop_version}:universal")
+
+    fg.deobf(implementation("thedarkcolour:kotlinforforge:${config.kotlin_mod_version}"))
+
+    fg.deobf(implementation("com.github.glitchfiend.biomesoplenty:BiomesOPlenty:${config.bop_version}:universal"))
+
 }
 
 compileKotlin {
     kotlinOptions {
         jvmTarget = '1.8'
+        languageVersion = '1.4'
+        apiVersion = '1.4'
     }
 }
+
+// Include assets and data from data generators
+//sourceSets.main.resources {
+//    srcDirs 'src/generated/resources/'
+//}
 
 jar {
     manifest {
         attributes([
-            "Specification-Title": config.mod_id,
-            "Specification-Vendor": config.mod_id,
-            "Specification-Version": "1", // We are version 1 of ourselves
-            "Implementation-Title": project.name,
-            "Implementation-Version": "${version}",
-            "Implementation-Vendor" : config.mod_id,
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                "Specification-Title": config.mod_id,
+                "Specification-Vendor": "floatingsareus",
+                "Specification-Version": "1", // We are version 1 of ourselves
+                "Implementation-Title": project.name,
+                "Implementation-Version": "${version}",
+                "Implementation-Vendor" :"floatingsareus",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
 }
 
-jar.finalizedBy('reobfJar')
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact jar
-        }
-    }
-    repositories {
-        maven {
-            url "file:///${project.projectDir}/mcmodsrepo"
-        }
+def parseConfig(File config) {
+    config.withReader {
+        def prop = new Properties()
+        prop.load(it)
+        return (new ConfigSlurper().parse(prop))
     }
 }

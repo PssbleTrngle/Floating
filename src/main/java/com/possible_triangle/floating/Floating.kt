@@ -15,9 +15,9 @@ class Floating {
     }
 
     init {
-        WORLD_TYPES.register("floating") { FloatingWorldType() }
+        WORLD_TYPES.register("floating") { FloatingWorldType.VANILLA }
         if (ModList.get().isLoaded("biomesoplenty"))
-            WORLD_TYPES.register("floating_bop") { FloatingBOPWorldType() }
+            WORLD_TYPES.register("floating_bop") { FloatingWorldType.BOP }
 
         WORLD_TYPES.register(MOD_CONTEXT.getKEventBus())
     }
